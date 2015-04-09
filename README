@@ -2,13 +2,30 @@
 
 Redmine's plugin to allow to assign an SLA by issue priority and project.
 
+This fork uses "business_time" gem to make allowed SLA delay timer to run 
+based on business time after issue filing, i.e. ignore none working hours or weekends.
+
+Also makes a SLA issue considered handled only when issue has been closed once.
+
+Changes in issue_sla.rb, hooks.rb, init.rb and locales translations. 
+Fixed existing bug in queries_helper.rb
+
 == Installation
 
 1. Copy the plugin directory into the vendor/plugins directory
 
 2. Migrate plugin:
    rake db:migrate_plugins
+   
+3. Go to Redmine root directory, add this line to "Gemfile":
 
-3. Start Redmine
+gem "business_time"
 
-Installed plugins are listed and can be configured from 'Admin -> Plugins' screen.
+Just after "source 'https://rubygems.org'"
+
+4. Load all the Gems by running:
+   bundle
+
+5. Start Redmine
+
+6. Installed plugins are listed and can be configured from 'Admin -> Plugins' screen.

@@ -11,13 +11,17 @@ class IssueSla < ActiveRecord::Base
   
   private
   def update_issues
+                   
     project.issues.open.where(:priority_id => priority.id).all.each do |issue|
-      next if issue.first_response_date.present?
+      next if issue.closed_on.present?
       
-      date = nil
+      date = nil      
+     
       if allowed_delay.present?
-        date = allowed_delay.hours.since(issue.created_on).round
+#    date = allowed_delay.hours.since(issue.created_on).round
+        date = allowed_delay.round.business_hours.after(issue.created_on).round
       end
+      
       if issue.expiration_date != date
         issue.init_journal(User.current)
         issue.attributes_before_change['expiration_date'] = date
